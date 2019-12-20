@@ -3,9 +3,9 @@ import axios from 'axios'
 let zqaxios = axios.create({
   baseURL: 'http://127.0.0.1:3000'
 })
-localStorage.setItem('baseurl', zqaxios.defaults.baseURL)
 // Add a request interceptor
 zqaxios.interceptors.request.use(function (config) {
+  localStorage.setItem('baseurl', zqaxios.defaults.baseURL)
   // Do something before request is sent
   let token = localStorage.getItem('zq_token')
   if (token) {

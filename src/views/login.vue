@@ -21,7 +21,7 @@
       <a href="/account">注册账号</a>
     </div>
     <!-- 登录 -->
-    <van-button type="primary" @click="login">主要按钮</van-button>
+    <van-button type="primary" @click="login">登录</van-button>
   </div>
 </template>
 
