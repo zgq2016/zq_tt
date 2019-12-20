@@ -12,7 +12,14 @@ export const userLogin = (data) => {
 // 用户详情
 export const userDetail = (id) => {
   return axios({
-    method: 'get',
     url: `/user/${id}`
+  })
+}
+// 用户详情
+export const userUpdate = (id, data) => {
+  return axios({
+    method: 'post',
+    url: `/user_update/${id}`,
+    data
   })
 }

@@ -1,36 +1,91 @@
 <template>
   <div class="editdata">
     <!-- Navbar -->
-    <van-nav-bar
-      title="编辑资料"
-      left-arrow
-      @click-left="$router.back()"
-    />
+    <van-nav-bar title="编辑资料" left-arrow @click-left="$router.back()" />
     <!-- 上传图片 -->
     <div class="imgs">
-      <img src="../assets/aaa.png" alt="">
+      <img :src="users.head_img" alt />
+      <van-uploader :after-read="afterRead" />
     </div>
     <!-- 数据 -->
-    <van-cell title="昵称" is-link value="火星网友" />
-    <van-cell title="密码" is-link value="***" />
-    <van-cell title="性别" is-link value="男" />
+    <van-cell title="昵称" is-link :value="users.nickname" />
+    <van-cell title="密码" is-link :value="users.password" />
+    <van-cell title="性别" is-link :value="users.gender===1?'男':'女'" />
+    <!-- 弹框 -->
+
   </div>
 </template>
 
 <script>
+//
+import { userDetail, userUpdate } from '@/api/user.js'
+import { uploadFile } from '@/api/uploadFile.js'
 export default {
-
+  data () {
+    return {
+      users: {}
+    }
+  },
+  methods: {
+    async afterRead (file) {
+      // console.log(file)
+      let formdata = new FormData()
+      formdata.append('file', file.file)
+      let res = await uploadFile(formdata)
+      // console.log(res)
+      if (res.data.message === '文件上传成功') {
+        let id = localStorage.getItem('zq_id')
+        let res1 = await userUpdate(id, { head_img: res.data.data.url })
+        if (res1.data.message === '修改成功') {
+          this.$toast.success(res1.data.message)
+          this.users.head_img =
+            localStorage.getItem('baseurl') + res.data.data.url
+        } else {
+          this.$toast.success('修改失败')
+        }
+      } else {
+        this.$toast('上传失败')
+      }
+    }
+  },
+  async mounted () {
+    let id = localStorage.getItem('zq_id')
+    let baseurl = localStorage.getItem('baseurl')
+    let res = await userDetail(id)
+    // console.log(res)
+    this.users = res.data.data
+    if (this.users.head_img) {
+      this.users.head_img = baseurl + this.users.head_img
+    } else {
+      this.users.head_img = baseurl + '/uploads/image/default.png'
+    }
+  }
 }
 </script>
 
 <style lang="less" scoped>
-.editdata{
-  .imgs{
-    text-align: center;
-    margin: 10px 0;
-    img{
-      width: 70vw*100/360;
-      height: 70vw*100/360;
+.editdata {
+  .imgs {
+    position: relative;
+    img {
+      width: 100vw * 100/360;
+      height: 100vw * 100/360;
+      margin: 20px auto;
+      border-radius: 50%;
+    }
+    // 修改元素的大小
+    /deep/.van-uploader__upload {
+      width: 100 / 360 * 100vw;
+      height: 100 / 360 * 100vw;
+    }
+    // 设置元素的对齐方式
+    /deep/.van-uploader {
+      // 实现任意元素居中
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
     }
   }
 }
