@@ -10,9 +10,10 @@
         v-model="users.username"
         label="用户名"
         placeholder="用户名/手机号"
-        error-message="手机号格式错误"
+        :error-message="err_msg"
+        @input="handleInput"
       />
-      <van-field v-model="users.password" label="密码" placeholder="密码" />
+      <van-field v-model="users.password" type='password' label="密码" placeholder="密码" />
     </van-cell-group>
     <!-- 注册账号 account number -->
     <div class="account">
@@ -20,17 +21,42 @@
       <a href="/account">注册账号</a>
     </div>
     <!-- 登录 -->
-    <van-button type="primary">主要按钮</van-button>
+    <van-button type="primary" @click="login">主要按钮</van-button>
   </div>
 </template>
 
 <script>
+import { userLogin } from '@/api/user.js'
 export default {
   data () {
     return {
       users: {
-        username: '',
-        password: ''
+        username: '10086',
+        password: '123'
+      },
+      err_msg: ''
+    }
+  },
+  methods: {
+    async login () {
+      let res = await userLogin(this.users)
+      localStorage.setItem('zq_token', res.data.data.token)
+      localStorage.setItem('zq_id', res.data.data.user.id)
+      console.log(res)
+      if (res.data.message === '登录成功') {
+        this.$toast.success(res.data.message)
+        this.$router.push({
+          name: 'Personal'
+        })
+      } else {
+        this.$toast.success(res.data.message)
+      }
+    },
+    handleInput (username) {
+      if ((/^1[34578]\d{9}$/.test(username))) {
+        this.err_msg = ''
+      } else {
+        this.err_msg = '手机号格式错误'
       }
     }
   }
