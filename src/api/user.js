@@ -15,7 +15,7 @@ export const userDetail = (id) => {
     url: `/user/${id}`
   })
 }
-// 用户详情
+// 编辑用户详情
 export const userUpdate = (id, data) => {
   return axios({
     method: 'post',

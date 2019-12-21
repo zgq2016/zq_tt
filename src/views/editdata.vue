@@ -8,11 +8,14 @@
       <van-uploader :after-read="afterRead" />
     </div>
     <!-- 数据 -->
-    <van-cell title="昵称" is-link :value="users.nickname" />
+    <van-cell title="昵称" is-link :value="users.nickname" @click="nicknameShow=!nicknameShow" />
     <van-cell title="密码" is-link :value="users.password" />
     <van-cell title="性别" is-link :value="users.gender===1?'男':'女'" />
     <!-- 弹框 -->
-
+    <!-- nickname -->
+    <van-dialog v-model="nicknameShow" title="编辑昵称" show-cancel-button @confirm='updateNick'>
+      <van-field :value='users.nickname' placeholder="编辑昵称" ref="nickname" />
+    </van-dialog>
   </div>
 </template>
 
@@ -23,10 +26,22 @@ import { uploadFile } from '@/api/uploadFile.js'
 export default {
   data () {
     return {
-      users: {}
+      users: {},
+      nicknameShow: false
     }
   },
   methods: {
+    async updateNick () {
+      let id = localStorage.getItem('zq_id')
+      // console.log(this.$refs.nickname.$refs.input.value)
+      let nickname = this.$refs.nickname.$refs.input.value
+      let res = await userUpdate(id, { nickname })
+      // console.log(res)
+      if (res.data.message === '修改成功') {
+        this.$toast.success(res.data.message)
+        this.users.nickname = res.data.data.nickname
+      }
+    },
     async afterRead (file) {
       // console.log(file)
       let formdata = new FormData()
