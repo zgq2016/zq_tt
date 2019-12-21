@@ -50,13 +50,22 @@ export default {
       nickShow: false,
       passShow: false,
       genderShow: false,
-      radio: '1'
+      radio: ''
     }
   },
   methods: {
     // 性别
-    updateGender () {
-
+    async updateGender () {
+      this.users.gender = Number(this.radio)
+      // this.radio = this.users.gender
+      console.log(this.radio)
+      console.log(this.users.gender)
+      let res = await userUpdate(this.id, { gender: this.radio })
+      console.log(res)
+      if (res.data.massage === '修改成功') {
+        this.$toast.success(res.data.massage)
+        this.users.gender = Number(this.radio)
+      }
     },
     // 修改密码取消事件
     beforeClose (action, done) {
