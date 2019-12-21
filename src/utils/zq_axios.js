@@ -19,6 +19,12 @@ zqaxios.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 zqaxios.interceptors.response.use(function (response) {
+  // if (response.data.message === '用户信息验证失败!' || response.data.message === '用户信息验证失败') {
+  //   // 给出提示
+  //   this.$toast.fail('用户信息验证失败')
+  //   // 重定向
+  //   location.href = '#/login'
+  // }
   // Do something with response data
   return response
 }, function (error) {

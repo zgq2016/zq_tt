@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '@/views/login.vue'
 import Personal from '@/views/personal.vue'
 import Editdata from '@/views/editdata.vue'
+import Register from '@/views/register.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +29,11 @@ const routes = [
     path: '/editdata',
     name: 'Editdata',
     component: Editdata
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
   }
 ]
 

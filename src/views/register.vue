@@ -13,44 +13,34 @@
         :error-message="err_msg"
         @input="handleInput"
       />
+      <van-field v-model="users.nickname" label="昵称" placeholder="昵称" />
       <van-field v-model="users.password" type='password' label="密码" placeholder="密码" />
     </van-cell-group>
-    <!-- 注册账号 account number -->
-    <div class="account">
-      没有账号?
-      <a href="#/Register" class>去注册</a>
-      <!-- <router-link to="#/register">注册账号</router-link> -->
-    </div>
     <!-- 登录 -->
-    <van-button type="primary" @click="login">登录</van-button>
+    <van-button type="primary" @click="register">注册</van-button>
   </div>
 </template>
 
 <script>
-import { userLogin } from '@/api/user.js'
+import { register } from '@/api/user.js'
 export default {
   data () {
     return {
       users: {
-        username: '',
-        password: ''
+        username: '10086',
+        nickname: '奇哥',
+        password: '123'
       },
       err_msg: ''
     }
   },
   methods: {
-    async login () {
-      let res = await userLogin(this.users)
-      localStorage.setItem('zq_token', res.data.data.token)
-      localStorage.setItem('zq_id', res.data.data.user.id)
+    async register () {
+      let res = await register(this.users)
       console.log(res)
-      if (res.data.message === '登录成功') {
+      if (res.data.message === '注册成功') {
         this.$toast.success(res.data.message)
-        this.$router.push({
-          name: 'Personal'
-        })
-      } else {
-        this.$toast.success(res.data.message)
+        this.$router.push({ name: 'Login' })
       }
     },
     handleInput (username) {
