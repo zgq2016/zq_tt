@@ -4,6 +4,7 @@ import Login from '@/views/login.vue'
 import Personal from '@/views/personal.vue'
 import Editdata from '@/views/editdata.vue'
 import Register from '@/views/register.vue'
+import Index from '@/views/index.vue'
 
 Vue.use(VueRouter)
 
@@ -12,7 +13,7 @@ const routes = [
     path: '/',
     name: '',
     redirect: {
-      name: 'Login'
+      name: 'Index'
     }
   },
   {
@@ -34,6 +35,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/index',
+    name: 'Index',
+    component: Index
   }
 ]
 

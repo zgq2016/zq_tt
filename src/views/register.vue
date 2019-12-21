@@ -27,9 +27,9 @@ export default {
   data () {
     return {
       users: {
-        username: '10086',
-        nickname: '奇哥',
-        password: '123'
+        username: '',
+        nickname: '',
+        password: ''
       },
       err_msg: ''
     }

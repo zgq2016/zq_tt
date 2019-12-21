@@ -32,8 +32,8 @@ export default {
   data () {
     return {
       users: {
-        username: '',
-        password: ''
+        username: '13012345678',
+        password: '000'
       },
       err_msg: ''
     }
